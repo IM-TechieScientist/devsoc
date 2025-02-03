@@ -14,7 +14,11 @@ The AI agent processes this data to provide meaningful insights into a companyâ€
 Features
 
 Fetch ESG scores from reports
+
 Analyze financial and stock trends
+
 Perform sentiment analysis on employee reviews & social media
+
 Track controversies using news articles
+
 Generate investor-friendly ESG reports
