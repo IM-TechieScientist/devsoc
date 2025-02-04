@@ -37,23 +37,24 @@ def get_long_stock_data(company):
     hist.reset_index(inplace=True)
     hist = hist[['Date', 'Open', 'Close', 'Volume']]
     hist['Ticker'] = company
-    return hist[['Open', 'Close', 'Volume']].to_csv()
+    return hist[['Open', 'Close', 'Volume']].values.tolist()
 
 def get_short_stock_data(company):
     """Fetch recent stock prices"""
+    company=get_ticker(company)
+
     stock = yf.Ticker(company)
-    hist = stock.history(period="1d")  # Get 1 year of stock data
+    hist = stock.history(period="2d")  # Get 1 year of stock data
     
     #relevant data only
     hist.reset_index(inplace=True)
     hist = hist[['Date', 'Open', 'Close', 'Volume']]
     hist['Ticker'] = company
-    return hist[['Open', 'Close', 'Volume']].to_csv()
-
+    return hist[['Open', 'Close', 'Volume']].values.tolist()
     # #dump in sqlite3
     # conn = sqlite3.connect(DB_FILE)
     # hist.to_sql("stock_data", conn, if_exists="append", index=False)
-    # conn.close()
+    # conn.close()  
 
     
 

@@ -63,6 +63,12 @@ def extract_esg_text(cik,filing_date,accession_number, document_name):
     else:
         print(f"Failed to fetch {url}")
         return None
+    
+def get_esg_sdg(contents):
+    # cmp=input("Enter company to get CIK and extract ESG text : ")
+    response = model.generate_content("Analyze the following texts and compare it with general ESG and SDG goals, Highlight compliances and what is missing or unclear. Include no other text of your own. Heading should be [ESG and SDG Compliance]"+contents)
+    time.sleep(1)
+    return response.text
 
 def get_text(cmp):
     # cmp=input("Enter company to get CIK and extract ESG text : ")
@@ -79,8 +85,10 @@ def get_text(cmp):
         print("Taking a powernap")
         time.sleep(5)
     
-    with open(f"esg_text_{cik}.txt") as file:
+    with open(f"esg_texts/esg_text_{cik}.txt") as file:
         contents=file.read()
         response = model.generate_content("Analyze the following text as a potential investor or as someone who works for an investor. Analyze the common trends, focus, mission, any changes in policies, removals and additions and highlight them alone. You are not to give financial advice of your own. Include no other text of your own "+contents)
     time.sleep(1)
-    return response.text
+    sdg=get_esg_sdg(contents)
+    return response.text,sdg
+    print("Received API call",cmp)

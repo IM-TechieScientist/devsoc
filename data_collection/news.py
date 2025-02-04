@@ -26,7 +26,8 @@ def get_company_news(company_name,pn):
     titles = []
     for result in soup.find_all("div", class_="BNeawe vvjwJb AP7Wnd"):
         title = result.get_text()
-        titles.append(title)
+        link = result.find_parent("a")["href"]
+        titles.append([title,link])
 
     return titles
 

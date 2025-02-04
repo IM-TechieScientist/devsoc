@@ -1,8 +1,16 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from data_collection import sec_text,news,stocks
 import uvicorn
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/sec_reports/{company}")
 async def get_sec_report(company: str):
     """End point to get processed ESG report"""
@@ -36,4 +44,4 @@ async def get_neg_news(company: str):
 #     return {"ticker": ticker, "sentiment": "Social sentiment analysis"}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="192.168.141.150", port=6969)
+    uvicorn.run(app, host="192.168.24.150", port=6969)
