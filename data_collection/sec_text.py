@@ -60,17 +60,19 @@ def extract_esg_text(cik,filing_date,accession_number, document_name):
         print(f"Failed to fetch {url}")
         return None
 
+def get_text(cmp):
+    # cmp=input("Enter company to get CIK and extract ESG text : ")
+    cik = get_cik(cmp)[0]
+    filings = get_company_filings(cik)
+    print(filings,type(filings))
 
-cmp=input("Enter company to get CIK and extract ESG text : ")
-cik = get_cik(cmp)[0]
-filings = get_company_filings(cik)
-print(filings,type(filings))
-
-for i in filings[1:6].to_dict(orient='records'):
-    esg_text = extract_esg_text(cik, i['filingDate'],i['accessionNumber'], i['primaryDocument'])
-    with open(f"esg_text_{cik}.txt", "a") as file:
-        file.write(esg_text)
-    print(esg_text)
-    print("-" * 50)
-    print("Taking a powernap")
-    time.sleep(5)
+    for i in filings[1:6].to_dict(orient='records'):
+        esg_text = extract_esg_text(cik, i['filingDate'],i['accessionNumber'], i['primaryDocument'])
+        with open(f"esg_text_{cik}.txt", "a") as file:
+            file.write(esg_text)
+        print(esg_text)
+        print("-" * 50)
+        print("Taking a powernap")
+        time.sleep(5)
+    with open(f"esg_text_{cik}.txt") as file:
+        return file.read()

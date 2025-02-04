@@ -57,24 +57,47 @@
 # reviews = fetch_glassdoor_reviews("Tesla")
 # print(reviews[:5])  # Show first 5 reviews
 
-import tweepy
+# import tweepy
 
-# Twitter API credentials (replace with actual keys)
-API_KEY = "ND8Ast9llps88XyGF7hUKRowM"
-API_SECRET = "kMd6wLU3pgsygJ3iDzwjmddBQrJOxLJu6HB0hIvpgzkuYCYENr"
-ACCESS_TOKEN = "1886442087547363328-w9YOOanVbUznESTO3dtwYQIWVhlsUo"
-ACCESS_SECRET = "7Gp16W6OFHwLlUUNhhPd07anxRpT8989fUdhSctd4fY9a"
+# # Twitter API credentials (replace with actual keys)
+# API_KEY = "ND8Ast9llps88XyGF7hUKRowM"
+# API_SECRET = "kMd6wLU3pgsygJ3iDzwjmddBQrJOxLJu6HB0hIvpgzkuYCYENr"
+# ACCESS_TOKEN = "1886442087547363328-w9YOOanVbUznESTO3dtwYQIWVhlsUo"
+# ACCESS_SECRET = "7Gp16W6OFHwLlUUNhhPd07anxRpT8989fUdhSctd4fY9a"
 
-# Authenticate with Twitter API
-auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
-auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
-api = tweepy.API(auth)
+# # Authenticate with Twitter API
+# auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
+# auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
+# api = tweepy.API(auth)
 
-def fetch_tweets(company):
-    """Fetch latest tweets mentioning a company"""
-    tweets = api.search_tweets(q=company, lang="en", count=100)
-    return [tweet.text for tweet in tweets]
+# def fetch_tweets(company):
+#     """Fetch latest tweets mentioning a company"""
+#     tweets = api.search_tweets(q=company, lang="en", count=100)
+#     return [tweet.text for tweet in tweets]
 
-# Example: Get Tesla tweets
-tweets = fetch_tweets("Glassdoor")
-print(tweets[:5])  # Show first 5 tweets
+# # Example: Get Tesla tweets
+# tweets = fetch_tweets("Glassdoor")
+# print(tweets[:5])  # Show first 5 tweets
+
+from newspaper import Article
+import requests
+from bs4 import BeautifulSoup
+
+def get_company_news(company_name):
+    """Fetch recent news articles related to a company"""
+    search_url = f"https://www.google.com/search?q={company_name}+news&tbm=nws"
+    headers = {"User-Agent": "Mozilla/5.0"}
+
+    response = requests.get(search_url, headers=headers)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    titles = []
+    for result in soup.find_all("div", class_="BNeawe vvjwJb AP7Wnd"):
+        title = result.get_text()
+        titles.append(title)
+
+    return titles
+
+# Example usage
+news = get_company_news("Oracle negative")
+print(news)
