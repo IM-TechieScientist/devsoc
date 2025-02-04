@@ -36,4 +36,4 @@ async def get_neg_news(company: str):
 #     return {"ticker": ticker, "sentiment": "Social sentiment analysis"}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=6969)
+    uvicorn.run(app, host="192.168.141.150", port=6969)

@@ -2,8 +2,12 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 import time
+import google.generativeai as genai
+import api 
 
+genai.configure(api_key=api.api)
 SEC_BASE_URL = "https://data.sec.gov/submissions/"
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 #sec requiring custom user-agent is sus af
 HEADERS = {"User-Agent": "Sample Company Name AdminContact@<sample company domain>.com"}
@@ -74,5 +78,9 @@ def get_text(cmp):
         print("-" * 50)
         print("Taking a powernap")
         time.sleep(5)
+    
     with open(f"esg_text_{cik}.txt") as file:
-        return file.read()
+        contents=file.read()
+        response = model.generate_content("Analyze the following text as a potential investor or as someone who works for an investor. Analyze the common trends, focus, mission, any changes in policies, removals and additions and highlight them alone. You are not to give financial advice of your own. Include no other text of your own "+contents)
+    time.sleep(1)
+    return response.text
