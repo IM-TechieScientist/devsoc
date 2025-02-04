@@ -72,7 +72,7 @@ def get_text(cmp):
 
     for i in filings[1:6].to_dict(orient='records'):
         esg_text = extract_esg_text(cik, i['filingDate'],i['accessionNumber'], i['primaryDocument'])
-        with open(f"esg_text_{cik}.txt", "a") as file:
+        with open(f"esg_texts/esg_text_{cik}.txt", "a") as file:
             file.write(esg_text)
         print(esg_text)
         print("-" * 50)
